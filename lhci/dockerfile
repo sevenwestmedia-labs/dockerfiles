@@ -4,9 +4,11 @@ USER root
 
 run set -eux pipefail
 run apt-get update \
-    && apt-get install -y wget \
-    && apt-get install -y curl \
-    && apt-get install -y gnupg2
+    && apt-get install -y \
+      wget \
+      curl \
+      gnupg2 \
+      build-essential
 
 # Add Chrome's apt-key
 run echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | tee -a /etc/apt/sources.list.d/google.list \
