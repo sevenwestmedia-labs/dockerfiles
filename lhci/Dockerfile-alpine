@@ -1,0 +1,14 @@
+FROM library/node:10-alpine
+
+USER root
+
+RUN apk add --no-cache \
+    git \
+    chromium \
+  && npm install -g @lhci/cli@0.3.x \
+  && npm cache clean --force
+
+RUN export LHCI_BUILD_CONTEXT__EXTERNAL_BUILD_URL="$BUILD_URL"
+
+ENTRYPOINT ["lhci", "healthcheck", "--fatal"]
+
