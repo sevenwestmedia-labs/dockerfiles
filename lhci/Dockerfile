@@ -2,27 +2,25 @@ FROM ubuntu:latest
 
 USER root
 
-run set -eux pipefail
-run apt-get update \
-    && apt-get install -y \
+RUN set -eux pipefail
+RUN apt-get update \
+  && apt-get install -y \
       wget \
       curl \
       gnupg2 \
-      build-essential
+      git \
+  && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | tee -a /etc/apt/sources.list.d/google.list \
+  && wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
+  && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
+  && apt-get update \
+  && apt-get install -y nodejs google-chrome-stable \
+  && rm -rf /var/lib/apt/lists/*
 
-# Add Chrome's apt-key
-run echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | tee -a /etc/apt/sources.list.d/google.list \
-    && wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
+RUN export CHROME_PATH=$(which google-chrome-stable)
+RUN export LHCI_BUILD_CONTEXT__EXTERNAL_BUILD_URL="$BUILD_URL"
 
-# Add Node's apt-key
-run curl -sL https://deb.nodesource.com/setup_10.x | bash -
+RUN npm install -g @lhci/cli@0.3.x \
+ && npm cache clean --force
 
-# Install NodeJS and Google Chrome
-run apt-get update \
-    && apt-get install -y nodejs google-chrome-stable
-
-run export CHROME_PATH=$(which google-chrome-stable)
-run export LHCI_BUILD_CONTEXT__EXTERNAL_BUILD_URL="$BUILD_URL"
-
-run npm install -g @lhci/cli@0.3.x
 ENTRYPOINT ["lhci", "healthcheck", "--fatal"]
+
