@@ -8,8 +8,10 @@ RUN apk add --no-cache \
 
 ENV AKAMAI_NETWORK=staging
 
+COPY ./akamai-hostnames.default /etc/akamai-hostnames
+
 WORKDIR /opt/swm/akamai-staging
-COPY . /opt/swm/akamai-staging
+COPY ./*.sh /opt/swm/akamai-staging/
 
 ENTRYPOINT [ "/opt/swm/akamai-staging/docker-entrypoint.sh" ]
 

@@ -3,5 +3,6 @@
 
 # except these
 !*.sh
+!*akamai-hostnames.default
 
 

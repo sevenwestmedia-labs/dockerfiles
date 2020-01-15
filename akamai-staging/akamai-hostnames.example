@@ -1,0 +1,6 @@
+#!/bin/sh
+
+AKAMAI_HOSTNAMES='
+example.com.edgesuite.net:example.com,www.example.com
+'
+
