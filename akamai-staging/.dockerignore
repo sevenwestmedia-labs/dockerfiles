@@ -1,0 +1,8 @@
+# ignore everything
+**
+
+# except these
+!*.sh
+!*akamai-hostnames.default
+
+
